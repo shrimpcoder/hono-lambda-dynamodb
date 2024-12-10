@@ -1,0 +1,21 @@
+services:
+    dynamodb:
+        image: amazon/dynamodb-local
+        command: -jar DynamoDBLocal.jar -sharedDb -dbPath . -optimizeDbBeforeStartup
+        # volumes:
+        #     - dynamodb:/home/dynamodblocal
+        ports:
+            - 8000:8000
+        privileged: true
+        environment:
+            - DOCKER_TLS_CERTDIR=/certs
+        volumes:
+            - dynamodb:/home/dynamodblocal
+            - /var/run/docker.sock:/var/run/docker.sock
+            - docker-certs:/certs/client
+
+volumes:
+    dynamodb:
+        driver: local
+    docker-certs:
+        driver: local
