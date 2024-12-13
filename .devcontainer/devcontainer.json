@@ -12,5 +12,6 @@
       ]
     }
   },
-  "postCreateCommand": "npm install"
+  "postCreateCommand": "npm install && chmod +x .devcontainer/createTable.sh && .devcontainer/createTable.sh",
+  "forwardPorts": [3000]
 }

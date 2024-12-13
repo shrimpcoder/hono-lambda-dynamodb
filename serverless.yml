@@ -25,6 +25,7 @@ plugins:
 custom:
   serverless-offline:
     httpPort: 3000
+    host: ${env:SERVER_HOST, '127.0.0.1'}
     format: esm
   esbuild:
     bundle: true
