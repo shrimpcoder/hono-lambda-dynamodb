@@ -1,16 +1,30 @@
-version: '3'
+version: '3.8'
 
 services:
   app:
-    build:
+    build: 
       context: .
       dockerfile: Dockerfile
     volumes:
       - ..:/workspace:cached
-      - /var/run/docker.sock:/var/run/docker.sock
+    command: sleep infinity
+    environment:
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=local
+      - AWS_DEFAULT_REGION=ap-northeast-1
+      - DYNAMODB_ENDPOINT=http://dynamodb:8000
+    networks:
+      - dev-network
     working_dir: /workspace
-    network_mode: host
-    tty: true
 
-volumes:
-  node-modules: 
+  dynamodb:
+    image: amazon/dynamodb-local:latest
+    ports:
+      - 8000:8000
+    command: -jar DynamoDBLocal.jar -inMemory -sharedDb
+    networks:
+      - dev-network
+
+networks:
+  dev-network:
+    driver: bridge

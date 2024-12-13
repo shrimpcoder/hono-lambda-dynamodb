@@ -1,0 +1,33 @@
+aws dynamodb create-table \
+    --table-name Test \
+    --attribute-definitions AttributeName=id,AttributeType=S \
+    --key-schema AttributeName=id,KeyType=HASH \
+    --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
+    --endpoint-url http://dynamodb:8000
+
+
+# 全てのアイテムを取得
+curl http://localhost:3000/items
+
+# 特定のIDのアイテムを取得（IDを適切な値に置き換えてください）
+curl http://localhost:3000/items/123
+
+# 新しいアイテムを作成
+curl -X POST http://localhost:3000/items \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "123",
+    "name": "テスト商品",
+    "price": 1000
+  }'
+
+# アイテムを更新（IDを適切な値に置き換えてください）
+curl -X PUT http://localhost:3000/items/123 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "更新された商品名",
+    "price": 2000
+  }'
+
+# アイテムを削除（IDを適切な値に置き換えてください）
+curl -X DELETE http://localhost:3000/items/123

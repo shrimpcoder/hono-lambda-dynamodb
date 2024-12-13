@@ -1,28 +1,19 @@
-# Ubuntuベースの設定
-FROM node:20-bullseye
+FROM mcr.microsoft.com/devcontainers/typescript-node:20-bullseye
 
-# Install basic development tools
 RUN apt-get update && apt-get install -y \
-    unzip \
     curl \
-    docker.io \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
-# AWS SAMのインストール
-RUN curl -L "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -o "aws-sam-cli-linux-x86_64.zip" \
-    && unzip aws-sam-cli-linux-x86_64.zip -d sam-installation \
-    && ./sam-installation/install \
-    && rm -rf aws-sam-cli-linux-x86_64.zip sam-installation
+RUN architecture=$(uname -m) && \
+    if [ "$architecture" = "x86_64" ]; then \
+        curl -L "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; \
+    else \
+        curl -L "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"; \
+    fi && \
+    unzip awscliv2.zip && \
+    ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
 
 RUN npm install -g aws-cdk
 
-# Dockerを使用するためのグループ設定
-RUN usermod -aG root node
-
-# Set environment variable
-ENV DEVCONTAINER=true
-
 WORKDIR /workspace
-RUN chown -R node:node /workspace
-USER node
-
