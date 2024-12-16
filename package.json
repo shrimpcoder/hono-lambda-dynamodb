@@ -4,9 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "serverless offline",
-    "build": "tsc",
+    "build": "node esbuild.config.js",
     "deploy": "cdk deploy",
-    "test": "vitest"
+    "build-container": "sam build --use-container --build-image public.ecr.aws/sam/build-nodejs20.x --debug --skip-pull-image",
+    "test": "vitest",
+    "start-api": "sam local start-api --host 0.0.0.0 --warm-containers EAGER --debug --container-host host.docker.internal --container-host-interface 0.0.0.0"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.709.0",

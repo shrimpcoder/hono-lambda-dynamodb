@@ -15,11 +15,13 @@ services:
       - DYNAMODB_ENDPOINT=http://dynamodb:8000
       - SERVER_HOST=0.0.0.0
       - TABLE_NAME=Test
+      - SAM_CLI_TELEMETRY=0
     networks:
       - dev-network
     working_dir: /workspace
     ports:
       - "3000:3000"
+    init: true
 
   dynamodb:
     image: amazon/dynamodb-local:latest

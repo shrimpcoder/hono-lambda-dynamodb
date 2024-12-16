@@ -12,7 +12,7 @@ provider:
 
 functions:
   api:
-    handler: src/app.handler
+    handler: src/index.handler
     events:
       - httpApi:
           path: /{proxy+}

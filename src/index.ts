@@ -5,7 +5,15 @@ import { dynamoDBMiddleware } from "./middleware/dynamodb";
 
 const app = new Hono<Env>();
 
-app.use("*", dynamoDBMiddleware("Test"));
+app.use(
+  "*",
+  dynamoDBMiddleware("Test", {
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
+  })
+);
 
 app.get("/", (c) => {
   return c.text("Hello World");
